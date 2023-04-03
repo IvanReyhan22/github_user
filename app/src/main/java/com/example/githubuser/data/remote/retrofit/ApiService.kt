@@ -1,5 +1,7 @@
-package com.example.githubuser
+package com.example.githubuser.data.remote.retrofit
 
+import com.example.githubuser.data.remote.response.GithubResponse
+import com.example.githubuser.data.remote.response.User
 import retrofit2.Call
 import retrofit2.http.*
 

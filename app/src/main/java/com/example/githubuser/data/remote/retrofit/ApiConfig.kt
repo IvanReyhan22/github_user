@@ -1,6 +1,6 @@
-package com.example.githubuser
+package com.example.githubuser.data.remote.retrofit
 
-import androidx.viewbinding.BuildConfig
+import com.example.githubuser.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
     companion object {
-        fun getApiService(): ApiService{
+        fun getApiService(): ApiService {
             val loggingInterceptor = if(BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             }else{
@@ -19,15 +19,15 @@ class ApiConfig {
             val authInterceptor = Interceptor {chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization","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")
+                    .addHeader("Authorization", BuildConfig.APP_KEY)
                     .build()
                 chain.proceed(requestHeaders)
             }
 
             val client = OkHttpClient
                 .Builder()
-                .addInterceptor(authInterceptor)
-                .addInterceptor(loggingInterceptor).build()
+                .addInterceptor(authInterceptor).build()
+//                .addInterceptor(loggingInterceptor).build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())

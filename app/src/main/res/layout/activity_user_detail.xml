@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserDetail">
+    tools:context=".ui.UserDetailActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/neutral_300"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/user_photo" />
 
     </androidx.cardview.widget.CardView>
 
