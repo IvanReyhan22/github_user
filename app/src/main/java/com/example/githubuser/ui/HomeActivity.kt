@@ -149,4 +149,10 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getGithubUsers().removeObservers(this)
         viewModel.searchUser(QUERY).removeObservers(this)
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.getGithubUsers().removeObservers(this)
+        viewModel.searchUser(QUERY).removeObservers(this)
+    }
 }

@@ -72,7 +72,7 @@ class UserDetailActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.getUserDetail(username).observeForever(myObserver)
+        viewModel.getUserDetail(username).observe(this, myObserver)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -111,9 +111,5 @@ class UserDetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.getUserDetail(username).removeObservers(this)
-    }
 
 }

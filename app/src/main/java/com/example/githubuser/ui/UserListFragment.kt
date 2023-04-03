@@ -116,11 +116,6 @@ class UserListFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.e("ON RESUME ${position}", "RESUMED")
-    }
-
     override fun onPause() {
         super.onPause()
         Log.e("ON PAUSE ${position}", "PAUSED")

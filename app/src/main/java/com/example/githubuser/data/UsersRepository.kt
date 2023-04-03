@@ -18,14 +18,14 @@ class UsersRepository private constructor(
     private val usersDao: UsersDao,
     private val appExecutors: AppExecutors,
 ) {
-    private val usersResult = MediatorLiveData<Result<List<UsersEntity>>>()
-    private val userResult = MediatorLiveData<Result<UsersEntity>>()
+    private val listResult = MediatorLiveData<Result<List<UsersEntity>>>()
+    private val result = MediatorLiveData<Result<UsersEntity>>()
 
     private val retrofitListLiveData = MutableLiveData<List<UsersEntity>>()
     private val retrofitLiveData = MutableLiveData<User>()
 
     fun getGithubUsers(): LiveData<Result<List<UsersEntity>>> {
-        usersResult.value = Result.Loading
+        listResult.value = Result.Loading
         val client = apiService.getUsers()
         client.enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
@@ -38,20 +38,22 @@ class UsersRepository private constructor(
             }
 
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                usersResult.value = Result.Error(t.message.toString())
+                listResult.value = Result.Error(t.message.toString())
             }
         })
 
         val localData = usersDao.getUsers()
-        usersResult.addSource(localData) { newData: List<UsersEntity> ->
-            usersResult.value = Result.Success(newData)
+        listResult.apply { removeSource(localData) }
+        listResult.addSource(localData) { newData: List<UsersEntity> ->
+            listResult.value = Result.Success(newData)
         }
+        return listResult
 
-        return usersResult
     }
 
     fun searchUser(username: String): LiveData<Result<List<UsersEntity>>> {
-        usersResult.value = Result.Loading
+//        usersResult.value = Result.Loading
+        listResult.value = Result.Loading
         val client = apiService.searchUser(username)
         client.enqueue(object : Callback<GithubResponse> {
             override fun onResponse(
@@ -67,20 +69,25 @@ class UsersRepository private constructor(
             }
 
             override fun onFailure(call: Call<GithubResponse>, t: Throwable) {
-                usersResult.value = Result.Error(t.message.toString())
+//                usersResult.value = Result.Error(t.message.toString())
+                listResult.value = Result.Error(t.message.toString())
             }
         })
 
         val localData = usersDao.getUsers()
-        usersResult.addSource(localData) { newData: List<UsersEntity> ->
-            usersResult.value = Result.Success(newData)
+//        usersResult.addSource(localData) { newData: List<UsersEntity> ->
+//            usersResult.value = Result.Success(newData)
+//        }
+        listResult.addSource(localData) { newData: List<UsersEntity> ->
+            listResult.value = Result.Success(newData)
         }
 
-        return usersResult
+//        return usersResult
+        return listResult
     }
 
     fun getUserDetail(username: String): LiveData<Result<UsersEntity>> {
-        userResult.value = Result.Loading
+        result.value = Result.Loading
         var isFavorite: Boolean = false
         val client = apiService.getUserDetail(username)
         client.enqueue(object : Callback<User> {
@@ -94,14 +101,13 @@ class UsersRepository private constructor(
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                userResult.value = Result.Error(t.message.toString())
+                result.value = Result.Error(t.message.toString())
             }
 
         })
 
-        userResult.addSource(retrofitLiveData) { user: User ->
-
-            userResult.value = Result.Success(
+        result.addSource(retrofitLiveData) { user: User ->
+            result.value = Result.Success(
                 UsersEntity(
                     user.id,
                     user.login,
@@ -116,11 +122,11 @@ class UsersRepository private constructor(
             )
         }
 
-        return userResult
+        return result
     }
 
     fun getUserFollow(username: String, pos: Int): LiveData<Result<List<UsersEntity>>> {
-        usersResult.value = Result.Loading
+        listResult.value = Result.Loading
         val client: Call<List<User>> = if (pos == 1) {
             apiService.getUserFollowers(username)
         } else {
@@ -138,16 +144,17 @@ class UsersRepository private constructor(
             }
 
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                usersResult.value = Result.Error(t.message.toString())
+                listResult.value = Result.Error(t.message.toString())
             }
 
         })
 
-        usersResult.addSource(retrofitListLiveData) { newData: List<UsersEntity> ->
-            usersResult.value = Result.Success(newData)
+        listResult.removeSource(retrofitListLiveData)
+        listResult.addSource(retrofitListLiveData) { newData: List<UsersEntity> ->
+            listResult.value = Result.Success(newData)
         }
 
-        return usersResult
+        return listResult
     }
 
     fun getFavorite(): LiveData<List<UsersEntity>> {
@@ -158,6 +165,23 @@ class UsersRepository private constructor(
         appExecutors.diskIO.execute {
             user.isfavorite = true
             usersDao.update(user)
+        }
+    }
+
+    private fun mapUserToRoom(retrofitRes: List<User>): List<UsersEntity> {
+        return retrofitRes.map { user ->
+            val isFavorite = usersDao.isUsersFavorite(user.id.toString())
+            UsersEntity(
+                user.id,
+                user.login,
+                user.name,
+                user.avatarUrl,
+                user.location,
+                user.followers,
+                user.following,
+                user.publicRepos,
+                isFavorite
+            )
         }
     }
 
