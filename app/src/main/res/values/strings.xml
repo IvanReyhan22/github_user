@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Github User</string>
+    <string name="followed_user">Followed User</string>
     <string name="setting">Setting</string>
+    <string name="favorite">User Favorite</string>
+    <string name="dark_mode">Dark Mode</string>
     <string name="bookmark">Bookmark</string>
     <string name="back">Back</string>
     <string name="search">Search</string>
@@ -15,13 +18,21 @@
     <string name="email">fortunecookie@gmail.com</string>
     <string name="company">Chatterbugapp,Redwoodjs,Preston-werner-ventures</string>
     <string name="follower">Followers</string>
+    <string name="follower_empty">There is no follwer</string>
     <string name="follower_count">120</string>
     <string name="following">Following</string>
+    <string name="following_empty">User haven\'t follow anyone</string>
+    <string name="follow">Follow</string>
     <string name="following_count">67</string>
     <string name="public_repo">Repositories</string>
     <string name="public_repo_count">12</string>
     <string name="location">indonesia</string>
     <string name="loading">Loading…</string>
+<<<<<<< Updated upstream
+=======
+    <string name="no_followed_user">You haven\'t followed anyone yet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+>>>>>>> Stashed changes
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_title_1">Followers</string>
     <string name="tab_title_2">Following</string>

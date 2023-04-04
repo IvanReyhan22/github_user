@@ -3,6 +3,7 @@ package com.example.githubuser.ui
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+<<<<<<< Updated upstream
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -20,10 +21,29 @@ import com.example.githubuser.data.local.entity.UsersEntity
 import com.example.githubuser.databinding.ActivityHomeBinding
 import com.example.githubuser.viewmodel.UsersViewModel
 import com.example.githubuser.viewmodel.ViewModelFactory
+=======
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuser.R
+import com.example.githubuser.User
+import com.example.githubuser.adapter.ListUserAdapter
+import com.example.githubuser.databinding.ActivityHomeBinding
+import com.example.githubuser.ui.model.UsersViewModel
+import com.example.githubuser.ui.model.UsersViewModelFactory
+>>>>>>> Stashed changes
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+<<<<<<< Updated upstream
 
     private lateinit var myObserver: Observer<com.example.githubuser.data.Result<List<UsersEntity>>>
     private val factory: ViewModelFactory by lazy { ViewModelFactory.getInstance(applicationContext) }
@@ -34,6 +54,13 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_USER = "extra_user"
         var QUERY = ""
+=======
+    private val factory: UsersViewModelFactory by lazy{ UsersViewModelFactory.getInstance(applicationContext)}
+    private val viewModel: UsersViewModel by viewModels { factory }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+>>>>>>> Stashed changes
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +68,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+<<<<<<< Updated upstream
         myObserver = Observer { result ->
             when (result) {
                 is com.example.githubuser.data.Result.Loading -> showLoading(true)
@@ -59,19 +87,52 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUserDataList(users: List<UsersEntity>) {
+=======
+        setInternetIndicator(isInternetConected(this))
+        viewModel.getGithubUsers()
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        viewModel.users.observe(this) {
+            setUserDataList(it)
+        }
+
+        viewModel.isEmpty.observe(this) {
+            setEmptyIndicator(it)
+        }
+
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvUser.layoutManager = layoutManager
+    }
+
+    private fun setUserDataList(users: List<User>) {
+>>>>>>> Stashed changes
         val listUserAdapter = ListUserAdapter(users)
         binding.rvUser.adapter = listUserAdapter
 
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+<<<<<<< Updated upstream
             override fun onItemClicked(data: UsersEntity) {
                 toDetail(data)
+=======
+            override fun onItemClicked(data: User) {
+                goToDetail(data)
+>>>>>>> Stashed changes
             }
         })
     }
 
+<<<<<<< Updated upstream
     private fun toDetail(user: UsersEntity) {
         val sendObjectIntent = Intent(this@HomeActivity, UserDetailActivity::class.java)
         sendObjectIntent.putExtra(EXTRA_USER, user.username)
+=======
+    private fun goToDetail(user: User) {
+        val sendObjectIntent = Intent(this@HomeActivity, UserDetailActivity::class.java)
+        sendObjectIntent.putExtra(HomeActivity.EXTRA_USER, user.login)
+>>>>>>> Stashed changes
         startActivity(sendObjectIntent)
     }
 
@@ -86,6 +147,7 @@ class HomeActivity : AppCompatActivity() {
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+<<<<<<< Updated upstream
                 QUERY = query
                 viewModel.searchUser(QUERY).observeForever { result ->
                     when (result) {
@@ -93,6 +155,9 @@ class HomeActivity : AppCompatActivity() {
                         else -> noInternetConnection(false)
                     }
                 }
+=======
+                viewModel.searchUser(query)
+>>>>>>> Stashed changes
                 searchView.clearFocus()
                 return true
             }
@@ -100,13 +165,17 @@ class HomeActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         })
 
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+<<<<<<< Updated upstream
         return when (item.itemId) {
             R.id.setting -> true
             else -> false
@@ -117,6 +186,21 @@ class HomeActivity : AppCompatActivity() {
         Toast.makeText(this@HomeActivity, message, Toast.LENGTH_SHORT).show()
     }
 
+=======
+        when (item.itemId) {
+            R.id.setting -> {
+                startActivity(Intent(this@HomeActivity, SettingActivity::class.java))
+                return true
+            }
+            R.id.favorite -> {
+                startActivity(Intent(this@HomeActivity, FavoriteUserActivity::class.java))
+                return true
+            }
+            else -> return true
+        }
+    }
+
+>>>>>>> Stashed changes
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.rvUser.visibility = View.INVISIBLE
@@ -127,16 +211,41 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+<<<<<<< Updated upstream
     private fun noInternetConnection(isOffline: Boolean) {
         if (isOffline) {
             binding.rvUser.visibility = View.INVISIBLE
             binding.noInternetIndicator.root.visibility = View.VISIBLE
         } else {
             binding.rvUser.visibility = View.VISIBLE
+=======
+    private fun setEmptyIndicator(isEmpty: Boolean) {
+        if (isEmpty) {
+            binding.emptyIndicator.root.visibility = View.VISIBLE
+        } else {
+            binding.emptyIndicator.root.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun isInternetConected(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun setInternetIndicator(isInternet: Boolean) {
+        if (!isInternet) {
+            binding.noInternetIndicator.root.visibility = View.VISIBLE
+        } else {
+>>>>>>> Stashed changes
             binding.noInternetIndicator.root.visibility = View.INVISIBLE
         }
 
     }
+<<<<<<< Updated upstream
 
     override fun onResume() {
         super.onResume()
@@ -155,4 +264,6 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getGithubUsers().removeObservers(this)
         viewModel.searchUser(QUERY).removeObservers(this)
     }
+=======
+>>>>>>> Stashed changes
 }

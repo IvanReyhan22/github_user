@@ -47,10 +47,20 @@
             android:text="@string/name"
             android:textColor="@color/black"
             android:textFontWeight="600"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+        <TextView
+            android:id="@+id/username"
+            style="@style/Paragraph.xSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/loading"
+            android:textColor="@color/orange_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -146,40 +156,69 @@
 
     </LinearLayout>
 
-    <ProgressBar
+    <androidx.cardview.widget.CardView
         android:id="@+id/profile_progressbar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        tools:visibility="invisible"
+        android:background="@color/white"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView" />
+        app:layout_constraintTop_toTopOf="@+id/cardView"
+        app:contentPadding="16dp"
+        android:visibility="visible">
 
-    <TextView
-        android:id="@+id/username"
-        style="@style/Paragraph.large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="visible" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ImageView
+        android:id="@+id/loc_ico"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/loading"
-        android:textColor="@color/orange_400"
+        android:src="@drawable/ic_baseline_location_on_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"/>
 
     <TextView
         android:id="@+id/location"
-        style="@style/Paragraph.xSmall"
+        style="@style/Paragraph.small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
         android:text="@string/loading"
+        android:textColor="@color/neutral_600"
+        app:layout_constraintBottom_toBottomOf="@+id/loc_ico"
+        app:layout_constraintStart_toEndOf="@+id/loc_ico"
+        app:layout_constraintTop_toTopOf="@+id/loc_ico" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_follow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/follow"
+        android:paddingVertical="8dp"
+        app:icon="@drawable/ic_baseline_add_24"
+        app:iconGravity="textStart"
+        app:iconTint="@color/neutral_500"
+        app:strokeColor="@color/neutral_500"
+        app:strokeWidth="1dp"
+        android:elevation="0dp"
+        android:backgroundTint="@color/fully_transparent_color"
         android:textColor="@color/neutral_500"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/loc_ico" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -188,7 +227,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_follow" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
