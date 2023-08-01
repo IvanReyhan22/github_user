@@ -6,12 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.githubuser.ui.UserListFragment
 
-<<<<<<< Updated upstream
-class SectionsPagerAdapter(activity: AppCompatActivity) :
-    FragmentStateAdapter(activity) {
-=======
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
->>>>>>> Stashed changes
     var username: String = ""
 
     override fun getItemCount(): Int {
@@ -27,5 +22,4 @@ class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(a
 
         return fragment
     }
-
 }

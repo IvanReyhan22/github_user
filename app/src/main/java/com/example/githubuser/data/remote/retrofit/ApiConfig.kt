@@ -1,10 +1,7 @@
 package com.example.githubuser.data.remote.retrofit
 
 import com.example.githubuser.BuildConfig
-<<<<<<< Updated upstream
-=======
 import com.example.githubuser.data.remote.ApiService
->>>>>>> Stashed changes
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,19 +20,15 @@ class ApiConfig {
             val authInterceptor = Interceptor {chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-<<<<<<< Updated upstream
-//                    .addHeader("Authorization", BuildConfig.APP_KEY)
-=======
                     .addHeader("Authorization",BuildConfig.APP_KEY)
->>>>>>> Stashed changes
                     .build()
                 chain.proceed(requestHeaders)
             }
 
             val client = OkHttpClient
                 .Builder()
-                .addInterceptor(authInterceptor).build()
-//                .addInterceptor(loggingInterceptor).build()
+                .addInterceptor(authInterceptor)
+                .addInterceptor(loggingInterceptor).build()
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())

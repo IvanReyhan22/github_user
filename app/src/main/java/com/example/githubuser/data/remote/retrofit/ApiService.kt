@@ -1,14 +1,7 @@
-<<<<<<< Updated upstream
-package com.example.githubuser.data.remote.retrofit
-
-import com.example.githubuser.data.remote.response.GithubResponse
-import com.example.githubuser.data.remote.response.User
-=======
 package com.example.githubuser.data.remote
 
 import com.example.githubuser.GithubResponse
 import com.example.githubuser.User
->>>>>>> Stashed changes
 import retrofit2.Call
 import retrofit2.http.*
 

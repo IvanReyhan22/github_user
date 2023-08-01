@@ -54,6 +54,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:3.6.0'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 
+
     //ktx
     implementation "androidx.activity:activity-ktx:1.7.0"
     implementation 'androidx.fragment:fragment-ktx:1.5.6'

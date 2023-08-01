@@ -1,13 +1,5 @@
 package com.example.githubuser
 
-<<<<<<< Updated upstream
-import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import com.example.githubuser.databinding.ActivityMainBinding
-import com.example.githubuser.ui.HomeActivity
-=======
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -24,15 +16,11 @@ import com.example.githubuser.ui.HomeActivity
 import com.example.githubuser.ui.model.SettingViewModel
 import com.example.githubuser.ui.model.SettingViewModelFactory
 import com.example.githubuser.utils.SettingPreferences
->>>>>>> Stashed changes
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-<<<<<<< Updated upstream
-=======
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
->>>>>>> Stashed changes
 
     companion object {
         const val SPLASH_TIME_OUT = 2000L
@@ -45,16 +33,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-<<<<<<< Updated upstream
-        supportActionBar?.hide()
-
-        Handler().postDelayed({
-            val intent = Intent(this@MainActivity, HomeActivity::class.java)
-            startActivity(intent)
-        }, SPLASH_TIME_OUT)
-
-    }
-=======
         val pref = SettingPreferences.getInstance(dataStore)
         val settingViewModel = ViewModelProvider(this, SettingViewModelFactory(pref)).get(
             SettingViewModel::class.java
@@ -89,5 +67,4 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
     }
 
->>>>>>> Stashed changes
 }
